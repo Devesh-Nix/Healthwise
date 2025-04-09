@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial; margin: 40px auto; max-width: 900px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h2>🗃 MCMI-III Admin Dashboard</h2>
+
+    <p><strong>Total Test Sessions:</strong> {{ session_count }}</p>
+    <p><strong>Completed Sessions:</strong> {{ completed_sessions }}</p>
+    <p><strong>Total Patients Tested:</strong> {{ patients_tested }}</p>
+
+    <h3>Latest Test Sessions</h3>
+    <table>
+        <tr><th>Patient</th><th>Attempt</th><th>Started</th><th>Status</th><th>Report</th></tr>
+        {% for session in latest_sessions %}
+        <tr>
+            <td>{{ session.patient.full_name }}</td>
+            <td>{{ session.attempt_number }}</td>
+            <td>{{ session.started_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if session.completed_at %}✅ Completed{% else %}⏳ In Progress{% endif %}
+            </td>
+            <td>
+                {% if session.completed_at %}
+                <a href="{% url 'generate_report_attempt' session.patient.id session.attempt_number %}">View</a>
+                {% else %}-{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

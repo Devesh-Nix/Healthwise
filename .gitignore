@@ -1,0 +1,30 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+env/
+
+# Django specific
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# VS Code, PyCharm
+.vscode/
+.idea/
+
+# Environment
+.env
+*.env
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Migrations (optional — if you don't want to track them)
+*/migrations/__pycache__/
+*/migrations/*.pyc

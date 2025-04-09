@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bulk Upload Questions</title>
+</head>
+<body>
+    <h1>📤 Upload Questions in Bulk (CSV/XLSX)</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: green;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" accept=".csv,.xlsx" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <p>📌 Supported Formats: <code>.csv</code> and <code>.xlsx</code> (columns: <b>number</b>, <b>text</b>)</p>
+
+    <p>📌 Example CSV Format:</p>
+    <pre>
+number,text
+1,"Question 1 text"
+2,"Question 2 text"
+3,"Question 3 text"
+    </pre>
+
+    <p>📌 Example XLSX Format:</p>
+    <pre>
+number	text
+1	Question 1 text
+2	Question 2 text
+3	Question 3 text
+    </pre>
+
+    <h2>Existing Questions</h2>
+    <table border="1">
+        <tr>
+            <th>Number</th>
+            <th>Text</th>
+        </tr>
+        {% for question in questions %}
+        <tr>
+            <td>{{ question.number }}</td>
+            <td>{{ question.text }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

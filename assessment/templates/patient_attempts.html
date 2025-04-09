@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ patient.full_name }} - Test History</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 800px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h2>{{ patient.full_name }} – All Test Attempts</h2>
+    <table>
+        <tr>
+            <th>Attempt</th>
+            <th>Started</th>
+            <th>Completed</th>
+            <th>Status</th>
+            <th>Report</th>
+        </tr>
+        {% for session in sessions %}
+        <tr>
+            <td>{{ session.attempt_number }}</td>
+            <td>{{ session.started_at|date:"Y-m-d H:i" }}</td>
+            <td>{{ session.completed_at|default:"-" }}</td>
+            <td>
+                {% if session.completed_at %}✅ Completed{% else %}⏳ In Progress{% endif %}
+            </td>
+            <td>
+                {% if session.completed_at %}
+                <a href="{% url 'generate_report_attempt' patient.id session.attempt_number %}">View</a>
+                {% else %}
+                -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

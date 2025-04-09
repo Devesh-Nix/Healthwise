@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📝 Conducting MCMI-III Test for: <strong>{{ patient.full_name }}</strong></h2>
+
+  <form method="post" class="card shadow-sm p-4 bg-white">
+    {% csrf_token %}
+    {% for question in questions %}
+      <div class="mb-3">
+        <label class="form-label">Q{{ question.number }}. {{ question.text }}</label>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="q{{ question.id }}_true" value="true" required>
+            <label class="form-check-label" for="q{{ question.id }}_true">True</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="q{{ question.id }}_false" value="false">
+            <label class="form-check-label" for="q{{ question.id }}_false">False</label>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success mt-3">✅ Submit Test</button>
+  </form>
+</div>
+{% endblock %}

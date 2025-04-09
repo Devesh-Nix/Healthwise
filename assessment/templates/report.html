@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📋 Test Report for <strong>{{ patient.full_name }}</strong></h2>
+  <p>DOB: {{ patient.dob }} | Gender: {{ patient.gender }}</p>
+
+  <h3>Scales, Raw Scores, BR Scores & Interpretations</h3>
+  <p class="text-muted">Attempt #{{ attempt }}</p>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Scale</th>
+            <th>Raw Score</th>
+            <th>Base Rate (BR)</th>
+            <th>Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in report_data %}
+            <tr>
+              <td>{{ item.scale }}</td>
+              <td>{{ item.raw_score }}</td>
+              <td>{{ item.br_score }}</td>
+              <td>{{ item.interpretation }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <a href="{% url 'patient_attempts' patient.id %}" class="btn btn-secondary mt-4">← Back to Attempts</a>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">👩‍⚕️ Welcome, {{ request.user.first_name|default:request.user.username }}</h2>
+  <h4>Your Patients</h4>
+
+  {% if patients %}
+    <ul class="list-group shadow-sm">
+      {% for patient in patients %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ patient.full_name }} ({{ patient.gender }}, DOB: {{ patient.dob }})
+          <span>
+            <a href="{% url 'patient_attempts' patient.id %}" class="btn btn-outline-primary btn-sm">Reports</a>
+            <a href="{% url 'take_test' patient.id %}" class="btn btn-outline-success btn-sm">Conduct Test</a>
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted mt-3">No patients added yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
