@@ -1,16 +1,13 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth import login
-from .forms import ClinicianSignupForm
+from .forms import ClinicianProfileForm, ClinicianSignupForm
 from .models import ClinicianProfile
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from .models import ClinicianProfile
-from .forms import ClinicianProfileForm
-
-
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+User = get_user_model()
 
 def clinician_signup(request):
     if request.method == 'POST':
@@ -45,10 +42,6 @@ def clinician_profile(request):
 
     return render(request, 'clinician_profile.html', {'form': form})
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordChangeView
-from django.urls import reverse_lazy
-from django.contrib.messages.views import SuccessMessageMixin
 
 class ClinicianPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'profile/change_password.html'
