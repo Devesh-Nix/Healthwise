@@ -14,6 +14,8 @@ class Command(BaseCommand):
                 password="Admin@1234"
             )
             self.stdout.write(self.style.SUCCESS("Superuser created successfully."))
+            print(f"Users: {User.objects.all()}")
+            print(User.objects.filter(is_superuser=True, is_staff=True))
 
             # 🔐 Delete this file after creation
             path_to_file = os.path.abspath(__file__)
@@ -23,3 +25,4 @@ class Command(BaseCommand):
         else:
             self.stdout.write(self.style.WARNING("Superuser already exists. No action taken."))
             # 🔐 Delete this file after creation
+            
