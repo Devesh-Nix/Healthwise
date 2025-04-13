@@ -44,6 +44,6 @@ def clinician_profile(request):
 
 
 class ClinicianPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
-    template_name = 'profile/change_password.html'
+    template_name = 'change_password.html'
     success_url = reverse_lazy('clinician_profile')
     success_message = "✅ Your password was changed successfully."
