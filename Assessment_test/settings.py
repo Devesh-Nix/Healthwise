@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-f*af&ev)5anbers@08!dcnq^ms_0i+xv$-4_(0-75o#nz5e6%n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mcmi-iii-psychological-test-system-django.onrender.com']
+ALLOWED_HOSTS = ['mcmi-iii-psychological-test-system-django.onrender.com','127.0.0.1',"127.0.0.1:8000"]
 
 # Application definition
 
@@ -75,11 +76,25 @@ WSGI_APPLICATION = 'Assessment_test.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Using SQLite for development and testing. In production, you would typically use a more robust database like PostgreSQL or MySQL.
+# Uncomment the following lines to use SQLite in development.
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+# Using dj_database_url to configure the database settings for production
+# and development environments. This allows for easy switching between different database backends.
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 
