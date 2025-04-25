@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">🧠 Select Test to Conduct</h2>
+    <form method="post" action="{% url 'select_test' %}" class="card p-4 shadow-sm bg-white">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="patient" class="form-label">Select Patient</label>
+            <select name="patient_id" id="patient" class="form-select">
+                {% for patient in patients %}
+                    <option value="{{ patient.id }}">{{ patient.full_name }} (ID: {{ patient.id }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="test" class="form-label">Select Test</label>
+            <select name="test_name" id="test" class="form-select">
+                <option value="MCMI-III">MCMI-III</option>
+                <option value="Other-Test-Placeholder">Other Test (coming soon)</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Proceed to Test</button>
+    </form>
+</div>
+{% endblock %}

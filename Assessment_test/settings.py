@@ -81,23 +81,23 @@ WSGI_APPLICATION = 'Assessment_test.wsgi.application'
 # Using SQLite for development and testing. In production, you would typically use a more robust database like PostgreSQL or MySQL.
 # Uncomment the following lines to use SQLite in development.
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Using dj_database_url to configure the database settings for production
 # and development environments. This allows for easy switching between different database backends.
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='sqlite:///db.sqlite3',
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
 
 
 # Password validation

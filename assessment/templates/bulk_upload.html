@@ -1,55 +1,77 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bulk Upload Questions</title>
-</head>
-<body>
-    <h1>📤 Upload Questions in Bulk (CSV/XLSX)</h1>
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">📤 Bulk Upload Questions</h2>
 
     {% if messages %}
-        {% for message in messages %}
-            <p style="color: green;">{{ message }}</p>
-        {% endfor %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
     {% endif %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="file" accept=".csv,.xlsx" required>
-        <button type="submit">Upload</button>
-    </form>
+    <div class="card shadow-sm p-4 bg-white">
+        <h4 class="mb-3">Upload Questions (CSV/XLSX)</h4>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="file" class="form-label">Select File</label>
+                <input type="file" name="file" id="file" class="form-control" accept=".csv,.xlsx" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <p class="text-muted mt-3">📌 Supported Formats: <code>.csv</code> and <code>.xlsx</code> (columns: <b>number</b>, <b>text</b>)</p>
+    </div>
 
-    <p>📌 Supported Formats: <code>.csv</code> and <code>.xlsx</code> (columns: <b>number</b>, <b>text</b>)</p>
+    <div class="mt-5">
+        <h4>📋 Existing Questions</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Number</th>
+                        <th>Text</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for question in page_obj %}
+                    <tr>
+                        <td>{{ question.number }}</td>
+                        <td>{{ question.text }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <p>📌 Example CSV Format:</p>
-    <pre>
-number,text
-1,"Question 1 text"
-2,"Question 2 text"
-3,"Question 3 text"
-    </pre>
+    <!-- Pagination Controls -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+            {% endif %}
 
-    <p>📌 Example XLSX Format:</p>
-    <pre>
-number	text
-1	Question 1 text
-2	Question 2 text
-3	Question 3 text
-    </pre>
+            <li class="page-item disabled">
+                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            </li>
 
-    <h2>Existing Questions</h2>
-    <table border="1">
-        <tr>
-            <th>Number</th>
-            <th>Text</th>
-        </tr>
-        {% for question in questions %}
-        <tr>
-            <td>{{ question.number }}</td>
-            <td>{{ question.text }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-</body>
-</html>
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

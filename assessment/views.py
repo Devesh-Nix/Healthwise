@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Question, Response
 from patients.models import Patient
-from .scoring_keys import SCORING_KEYS
+from .scoring_keys import score_mcmi_iii
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import TestSession
 from django.utils import timezone
 from .models import TestSession
+from collections import defaultdict
 
 import csv
 import mimetypes
@@ -20,73 +21,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Patient, TestSession, Response, Question
-
-@login_required
-def add_patient(request):
-    if request.method == 'POST':
-        full_name = request.POST['full_name']
-        dob = request.POST['dob']
-        gender = request.POST['gender']
-        email = request.POST.get('email', '')
-
-        Patient.objects.create(
-            clinician=request.user,
-            full_name=full_name,
-            dob=dob,
-            gender=gender,
-            email=email
-        )
-        messages.success(request, "Patient added successfully.")
-        return redirect('add_patient')
-
-    return render(request, 'add_patient_select_test.html')
-
-@login_required
-def select_test(request):
-    patients = Patient.objects.filter(clinician=request.user)
-
-    if request.method == 'POST':
-        patient_id = request.POST['patient_id']
-        test_name = request.POST['test_name']
-
-        if test_name == "MCMI-III":
-            return redirect('take_test', patient_id=patient_id)
-
-        messages.warning(request, "This test is not available yet.")
-        return redirect('select_test')
-
-    return render(request, 'add_patient_select_test.html', {"patients": patients})
-
-# def generate_report(request, patient_id):
-#     patient = get_object_or_404(Patient, id=patient_id)
-#     responses = Response.objects.filter(patient=patient)
-
-#     report_data = []
-
-#     for scale, data in SCORING_KEYS.items():
-#         score = 0
-#         for qn in data['questions']:
-#             try:
-#                 question = Question.objects.get(number=qn)
-#                 response = responses.get(question=question)
-#                 if response.answer:
-#                     score += 1
-#             except (Question.DoesNotExist, Response.DoesNotExist):
-#                 continue
-
-#         interpretation = data['interpretation'](score)
-#         br_score = data['br_conversion'](score)
-#         report_data.append({
-#             'scale': scale,
-#             'raw_score': score,
-#             'br_score': br_score,
-#             'interpretation': interpretation
-#         })
-
-#     return render(request, 'assessment/report.html', {
-#         'patient': patient,
-#         'report_data': report_data
-#     })
+from django.core.paginator import Paginator
 
 @staff_member_required
 def admin_dashboard(request):
@@ -148,36 +83,36 @@ def take_test(request, patient_id):
         'attempt': attempt
     })
 
+grouped_results = defaultdict(list)
+
 def generate_report_attempt(request, patient_id, attempt):
+    # Get patient
     patient = get_object_or_404(Patient, id=patient_id)
+
+    # Fetch responses using patient + attempt (as value)
     responses = Response.objects.filter(patient=patient, attempt=attempt)
+    
+    # Convert responses to dictionary format expected by scoring function
+    response_dict = {r.question.number: r.answer for r in responses}
 
-    report_data = []
+    # Run MCMI-III scoring on the responses
+    result = score_mcmi_iii(response_dict, gender=patient.gender.lower())
 
-    for scale, data in SCORING_KEYS.items():
-        score = 0
-        for qn in data['questions']:
-            try:
-                question = Question.objects.get(number=qn)
-                response = responses.get(question=question)
-                if response.answer:
-                    score += 1
-            except:
-                continue
+    # Group results by section
+    grouped_results = defaultdict(list)
+    for scale, data in result['results'].items():
+        section = data.get("section", "Other")
+        grouped_results[section].append((scale, data))
 
-        report_data.append({
-            'scale': scale,
-            'raw_score': score,
-            'br_score': data['br_conversion'](score),
-            'interpretation': data['interpretation'](score)
-        })
-
+    # Render the report
     return render(request, 'report.html', {
         'patient': patient,
-        'report_data': report_data,
-        'attempt': attempt
+        'attempt': attempt,
+        'valid': result['valid'],
+        'elevated_scales': result.get('elevated_scales', []),
+        'clinical_concerns': result.get('clinical_concerns', []),
+        'grouped_results': dict(grouped_results),
     })
-
 
 def bulk_upload_questions(request):
     if request.method == "POST":
@@ -223,5 +158,10 @@ def bulk_upload_questions(request):
 
         return redirect('bulk_upload_questions')
 
+    # Fetch all questions and paginate them
     questions = Question.objects.all().order_by('number')
-    return render(request, 'bulk_upload.html', {'questions': questions})
+    paginator = Paginator(questions, 10)  # Show 10 questions per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'bulk_upload.html', {'page_obj': page_obj})

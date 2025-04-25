@@ -1,37 +1,53 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  <h2 class="mb-4">📋 Test Report for <strong>{{ patient.full_name }}</strong></h2>
-  <p>DOB: {{ patient.dob }} | Gender: {{ patient.gender }}</p>
 
-  <h3>Scales, Raw Scores, BR Scores & Interpretations</h3>
-  <p class="text-muted">Attempt #{{ attempt }}</p>
+{% if not valid %}
+❌ {{ message }}
+← Back to Attempts
+{% else %}
+{% comment %} Hardcoded section list since 'split' filter isn't supported {% endcomment %}
+{% for section, scales in grouped_results.items %}
+  <h4 class="mt-4">
+    {% if section == 'Modifying Indices' %}🧪 Validity & Response Style
+    {% elif section == 'Personality Patterns' %}🧠 Personality Patterns
+    {% elif section == 'Clinical Syndromes' %}⚠️ Clinical Syndromes
+    {% else %}📁 {{ section }}
+    {% endif %}
+  </h4>
 
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <table class="table table-striped">
-        <thead>
+  <div class="card shadow-sm mb-3">
+    <div class="card-body p-0">
+      <table class="table table-bordered mb-0">
+        <thead class="table-light">
           <tr>
             <th>Scale</th>
             <th>Raw Score</th>
-            <th>Base Rate (BR)</th>
+            <th>BR Score</th>
             <th>Interpretation</th>
           </tr>
         </thead>
         <tbody>
-          {% for item in report_data %}
+          {% for scale, data in scales %}
             <tr>
-              <td>{{ item.scale }}</td>
-              <td>{{ item.raw_score }}</td>
-              <td>{{ item.br_score }}</td>
-              <td>{{ item.interpretation }}</td>
+              <td>
+                {{ scale }}
+                {% if data.br_score >= 85 %}
+                  <span class="badge bg-danger ms-2">High</span>
+                {% elif data.br_score >= 75 %}
+                  <span class="badge bg-warning text-dark ms-2">Elevated</span>
+                {% endif %}
+              </td>
+              <td>{{ data.raw_score }}</td>
+              <td>{{ data.br_score }}</td>
+              <td>{{ data.interpretation }}</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
+{% endfor %}
+{% endif %}
 
-  <a href="{% url 'patient_attempts' patient.id %}" class="btn btn-secondary mt-4">← Back to Attempts</a>
-</div>
+← Back to Attempts
 {% endblock %}
