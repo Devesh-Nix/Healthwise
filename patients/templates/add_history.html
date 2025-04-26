@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>Add Patient History for {{ patient.full_name }}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label>Condition Title</label>
+      <input type="text" name="condition_title" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>Description</label>
+      <textarea name="description" class="form-control" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label>Prescribed Treatment</label>
+      <textarea name="prescribed_treatment" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+      <label>Diagnosed By (Doctor Name)</label>
+      <input type="text" name="diagnosed_by" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+
+  <a href="{% url 'patient_detail' patient.id %}" class="btn btn-secondary mt-3">← Back to Patient</a>
+</div>
+{% endblock %}

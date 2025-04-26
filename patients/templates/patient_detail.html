@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>{{ patient.full_name }}'s Details</h2>
+
+  <p><strong>DOB:</strong> {{ patient.dob }}</p>
+  <p><strong>Gender:</strong> {{ patient.gender }}</p>
+
+  <h4 class="mt-4">📝 Medical History</h4>
+  {% if histories %}
+    <ul class="list-group">
+      {% for history in histories %}
+        <li class="list-group-item">
+          <strong>{{ history.condition_title }}</strong> ({{ history.date_recorded }})<br>
+          <small>{{ history.description }}</small><br>
+          {% if history.prescribed_treatment %}
+            <small><strong>Treatment:</strong> {{ history.prescribed_treatment }}</small><br>
+          {% endif %}
+          {% if history.diagnosed_by %}
+            <small><strong>Diagnosed by:</strong> Dr. {{ history.diagnosed_by }}</small>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">No history records yet.</p>
+  {% endif %}
+
+  <a href="{% url 'add_patient_history' patient.id %}" class="btn btn-primary mt-4">➕ Add New History</a>
+</div>
+{% endblock %}
