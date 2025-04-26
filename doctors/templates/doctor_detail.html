@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm my-4">
+
+        <div class="card-body text-center">
+          <!-- Doctor Image Placeholder -->
+          <img src="https://cdn-icons-png.flaticon.com/512/387/387561.png" alt="Doctor" class="rounded-circle mb-3" width="120" height="120">
+
+          <h3 class="card-title">Dr. {{ doctor.full_name }}</h3>
+
+          <h5 class="mt-2">
+            <span class="badge bg-primary">{{ doctor.specialization }}</span>
+          </h5>
+
+          <div class="mt-4">
+            <p>📍 <strong>City:</strong> {{ doctor.city }}</p>
+            <p>🎓 <strong>Experience:</strong> {{ doctor.experience_years }} years</p>
+            <p>💬 <strong>Consultation Type:</strong> {{ doctor.available_for|capfirst }}</p>
+            <p>💰 <strong>Consultation Fee:</strong> ₹{{ doctor.consultation_fee }}</p>
+            <p>🏥 <strong>Clinic Address:</strong> {{ doctor.clinic_address }}</p>
+            <p>📞 <strong>Phone Number:</strong> {{ doctor.phone_number }}</p>
+          </div>
+
+          <a href="{% url 'book_appointment' doctor.slug %}" class="btn btn-success w-100 my-3">
+            📅 Book Appointment
+          </a>
+
+          <a href="{% url 'doctor_list' %}" class="btn btn-outline-secondary w-100">
+            ← Back to Search
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

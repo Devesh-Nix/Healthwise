@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">👨‍⚕️ Find Your Doctor</h2>
+
+  <form method="get" class="row g-3 my-3">
+    <div class="col-md-8">
+      <input type="text" name="q" class="form-control" placeholder="Search by Name, Specialty, City" value="{{ request.GET.q }}">
+    </div>
+    <div class="col-md-4">
+      <button type="submit" class="btn btn-primary w-100">🔎 Search</button>
+    </div>
+  </form>
+
+  <div class="row mt-4">
+    {% for doctor in doctors %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{% url 'doctor_detail' doctor.slug %}" class="text-decoration-none text-dark">
+                Dr. {{ doctor.full_name }}
+              </a>
+            </h5>
+
+            <h6>
+              <span class="badge bg-success">{{ doctor.specialization }}</span>
+            </h6>
+
+            <p class="card-text mt-2">
+              📍 <strong>City:</strong> {{ doctor.city }}<br>
+              💬 <strong>Consultation:</strong> {{ doctor.available_for|capfirst }}<br>
+              🎓 <strong>Experience:</strong> {{ doctor.experience_years }} years<br>
+              💰 <strong>Fee:</strong> ₹{{ doctor.consultation_fee }}
+            </p>
+
+            <a href="{% url 'doctor_detail' doctor.slug %}" class="btn btn-outline-primary w-100">View Profile ➔</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">No doctors found matching your search. Try another city or specialty!</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

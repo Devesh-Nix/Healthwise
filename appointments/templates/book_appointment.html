@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>📅 Book Appointment with Dr. {{ doctor.full_name }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+  
+    <div class="mb-3">
+      <label>Select Patient:</label>
+      <select name="patient" class="form-select" required>
+        {% for patient in patients %}
+          <option value="{{ patient.id }}">{{ patient.full_name }} ({{ patient.gender }})</option>
+        {% endfor %}
+      </select>
+    </div>
+  
+    <div class="mb-3">
+      <label>Appointment Date:</label>
+      <input type="date" name="appointment_date" class="form-control" required>
+    </div>
+  
+    <div class="mb-3">
+      <label>Appointment Time:</label>
+      <input type="time" name="appointment_time" class="form-control" required>
+    </div>
+  
+    <div class="mb-3">
+      <label>Mode of Consultation:</label>
+      <select name="mode_of_consultation" class="form-select" required>
+        <option value="chat">Chat</option>
+        <option value="video">Video Call</option>
+        <option value="physical">Physical Visit</option>
+      </select>
+    </div>
+  
+    <button type="submit" class="btn btn-primary w-100">📅 Confirm Appointment</button>
+  </form>
+  
+
+  <a href="{% url 'doctor_list' %}" class="btn btn-secondary mt-4">← Back to Doctors</a>
+</div>
+{% endblock %}
