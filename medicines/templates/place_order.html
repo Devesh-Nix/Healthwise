@@ -1,0 +1,26 @@
+{% extends 'base_patient.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">🛒 Checkout</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label>Full Name</label>
+      <input type="text" name="full_name" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Address</label>
+      <textarea name="address" class="form-control" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Phone</label>
+      <input type="text" name="phone" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">✅ Place Order</button>
+  </form>
+</div>
+{% endblock %}

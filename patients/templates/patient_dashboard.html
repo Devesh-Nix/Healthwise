@@ -1,0 +1,58 @@
+{% extends 'base_patient.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-center mb-5">👋 Welcome, {{ user.username }}!</h2>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🚑 Book Ambulance</h5>
+          <p class="card-text">Need urgent help? Book ambulance immediately!</p>
+          <a href="{% url 'ambulance_services' %}" class="btn btn-primary w-100">Book Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">💊 Order Medicines</h5>
+          <p class="card-text">Find your medicines and get them delivered fast!</p>
+          <a href="{% url 'medicine_list' %}" class="btn btn-success w-100">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🏥 Find Doctors</h5>
+          <p class="card-text">Consult doctors nearby for your health needs.</p>
+          <a href="{% url 'doctor_list' %}" class="btn btn-info w-100">View Doctors</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🏠 Home Services</h5>
+          <p class="card-text">Need nurses, caretakers, home cleaners?</p>
+          <a href="{% url 'service_list' %}" class="btn btn-warning w-100">Book Services</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">📝 Your Orders & Appointments</h5>
+          <p class="card-text">View your active and past bookings and purchases.</p>
+          <a href="#" class="btn btn-dark w-100 disabled">Coming Soon</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base_patient.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📅 {{ patient.full_name }}'s Appointments</h2>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Consultation Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in appointments %}
+            <tr>
+              <td>Dr. {{ appointment.doctor.full_name }}</td>
+              <td>{{ appointment.appointment_date }}</td>
+              <td>{{ appointment.appointment_time }}</td>
+              <td>{{ appointment.mode_of_consultation|capfirst }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4" class="text-center text-muted">No appointments found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <a href="{% url 'clinician_dashboard' %}" class="btn btn-secondary mt-4">← Back to Dashboard</a>
+</div>
+{% endblock %}

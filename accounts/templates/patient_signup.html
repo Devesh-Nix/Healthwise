@@ -1,0 +1,17 @@
+{% extends 'base_patient.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📝 Patient Signup</h2>
+  
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary w-100 mt-3">✅ Signup</button>
+  </form>
+
+  <p class="mt-3 text-center">
+    Already have an account? <a href="{% url 'patient_login' %}">🔑 Login here</a>
+  </p>
+</div>
+{% endblock %}

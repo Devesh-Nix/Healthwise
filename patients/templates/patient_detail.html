@@ -1,10 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'base_patient.html' %}
 {% block content %}
 <div class="container">
   <h2>{{ patient.full_name }}'s Details</h2>
 
   <p><strong>DOB:</strong> {{ patient.dob }}</p>
   <p><strong>Gender:</strong> {{ patient.gender }}</p>
+  <a href="{% url 'patient_appointments' patient.id %}" class="btn btn-primary mb-3">
+    📅 View Appointments
+  </a>
+  
 
   <h4 class="mt-4">📝 Medical History</h4>
   {% if histories %}

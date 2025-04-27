@@ -19,24 +19,10 @@ A web-based diagnostic tool built with Django that allows clinicians to register
 
 ## 📁 Project Structure
 
-```
-Assessment_test/
-├── assessment/             # Core app (models, views, logic)
-├── templates/              # HTML templates
-│   ├── base.html           # Main layout
-│   ├── add_patient_select_test.html
-│   ├── take_test.html
-│   ├── report.html
-│   └── profile/            # Profile-related pages
-│       ├── clinician_profile.html
-│       ├── change_password.html
-│       └── change_email.html
-├── static/                 # Static files (CSS, JS, etc.)
-├── media/                  # Uploaded media (profile pictures)
-├── scoring_keys.py         # MCMI-III scoring rules
-├── manage.py
-└── requirements.txt
-```
+
+- will be updated soon
+
+
 
 ---
 

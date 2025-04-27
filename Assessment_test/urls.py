@@ -18,15 +18,20 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
+from accounts.views import landing_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', landing_page, name='landing_page'),
     path('', include('assessment.urls')),
     path('', include('patients.urls')),
     path('accounts/', include('accounts.urls')),
     path('doctors/', include('doctors.urls')),
     path('appointments/', include('appointments.urls')),
-
+    path('medicines/', include('medicines.urls')),
+    path('ambulances/', include('ambulance.urls')),
+    path('services/', include('services.urls')),
+    path('', include('superadmin.urls')),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

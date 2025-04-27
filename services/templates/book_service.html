@@ -1,0 +1,41 @@
+{% extends 'base_patient.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📅 Book {{ service_provider.full_name }}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label>Your Full Name</label>
+      <input type="text" name="client_name" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Phone</label>
+      <input type="text" name="client_phone" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Address</label>
+      <textarea name="address" class="form-control" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Service Date</label>
+      <input type="date" name="date" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Start Time</label>
+      <input type="time" name="start_time" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Duration (Hours)</label>
+      <input type="number" name="duration_hours" class="form-control" min="1" required>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">✅ Confirm Booking</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_patient.html' %}
 {% block content %}
 <div class="container">
   <div class="row justify-content-center">
@@ -27,12 +27,13 @@
           <a href="{% url 'book_appointment' doctor.slug %}" class="btn btn-success w-100 my-3">
             📅 Book Appointment
           </a>
-
+          <a href="{% url 'doctor_appointments' doctor.slug %}" class="btn btn-outline-primary w-100 mb-3">
+            📅 View Doctor's Appointments
+          </a>        
           <a href="{% url 'doctor_list' %}" class="btn btn-outline-secondary w-100">
             ← Back to Search
           </a>
         </div>
-
       </div>
     </div>
   </div>

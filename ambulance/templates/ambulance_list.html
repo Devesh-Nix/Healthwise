@@ -1,0 +1,26 @@
+{% extends 'base_patient.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">🚑 Available Ambulance Services</h2>
+
+  <div class="row">
+    {% for amb in ambulances %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ amb.provider_name }}</h5>
+            <p>📍 City: {{ amb.location_city }}</p>
+            <p>📞 Contact: {{ amb.contact_number }}</p>
+            <p>💵 Base Price: ₹{{ amb.base_price }}</p>
+            <a href="{% url 'book_ambulance' amb.id %}" class="btn btn-outline-primary w-100 mt-2">
+              🚑 Book Now
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">No ambulances available at the moment.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'base_superadmin.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">📊 SuperAdmin Healthcare Dashboard</h2>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card text-white bg-primary shadow-sm h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title">👨‍⚕️ Doctors</h5>
+          <p class="card-text display-6">{{ doctor_count }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-success shadow-sm h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title">🧑‍💻 Patients</h5>
+          <p class="card-text display-6">{{ patient_count }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-info shadow-sm h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title">🏥 Appointments</h5>
+          <p class="card-text display-6">{{ appointment_count }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-danger shadow-sm h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title">🚑 Ambulance Bookings</h5>
+          <p class="card-text display-6">{{ ambulance_count }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-warning shadow-sm h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title">💊 Medicine Orders</h5>
+          <p class="card-text display-6">{{ medicine_orders }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-secondary shadow-sm h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title">🏠 Home Services</h5>
+          <p class="card-text display-6">{{ service_bookings }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-5">
+        <h4 class="mb-4">📈 Trends Overview</h4>
+        <canvas id="trendsChart"></canvas>
+    </div>
+    <div class="mt-5">
+        <h4>⚡ Quick Actions</h4>
+        
+        <div class="d-flex gap-3 flex-wrap">
+            <a href="/admin/doctors/doctorprofile/add/" class="btn btn-primary">➕ Add Doctor</a>
+            <a href="/admin/medicines/medicine/add/" class="btn btn-success">➕ Add Medicine</a>
+            <a href="/admin/services/localservice/add/" class="btn btn-warning">➕ Add Local Service</a>
+        </div>
+    </div>
+      
+      
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    const ctx = document.getElementById('trendsChart').getContext('2d');
+    const trendsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Doctors', 'Patients', 'Appointments', 'Ambulance', 'Medicines', 'Services'],
+            datasets: [{
+                label: 'Total Count',
+                data: [
+                    {{ doctor_count }},
+                    {{ patient_count }},
+                    {{ appointment_count }},
+                    {{ ambulance_count }},
+                    {{ medicine_orders }},
+                    {{ service_bookings }}
+                ],
+                backgroundColor: [
+                    '#0d6efd', '#198754', '#0dcaf0', '#dc3545', '#ffc107', '#6c757d'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+    </script>
+    <div class="mt-5">
+    <h4>📝 Recent Activities</h4>
+    
+    <ul class="list-group list-group-flush">
+        {% for app in latest_appointments %}
+        <li class="list-group-item">📋 Appointment: {{ app.patient.full_name }} with Dr. {{ app.doctor.clinician_profile.full_name }}</li>
+        {% endfor %}
+        {% for amb in latest_ambulances %}
+        <li class="list-group-item">🚑 Ambulance booked by: {{ amb.patient.full_name }}</li>
+        {% endfor %}
+        {% for med in latest_medicines %}
+        <li class="list-group-item">💊 Medicine Order: {{ med.patient.full_name }}</li>
+        {% endfor %}
+        {% for serv in latest_services %}
+        <li class="list-group-item">🏠 Service Booked: {{ serv.patient.full_name }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base_patient.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">🛒 Your Cart</h2>
+
+  {% if cart_items %}
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Medicine</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart_items %}
+          <tr>
+            <td>{{ item.medicine.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.subtotal }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="2"><strong>Total</strong></td>
+          <td><strong>₹{{ total }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a href="{% url 'place_order' %}" class="btn btn-primary w-100">🛒 Proceed to Checkout</a>
+  {% else %}
+    <p class="text-muted">Your cart is empty.</p>
+  {% endif %}
+</div>
+{% endblock %}

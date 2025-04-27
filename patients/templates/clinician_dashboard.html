@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_clinician.html' %}
 {% block content %}
 <div class="container">
   <h2 class="mb-4">👩‍⚕️ Welcome, {{ request.user.first_name|default:request.user.username }}</h2>

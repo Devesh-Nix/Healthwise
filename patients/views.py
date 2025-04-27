@@ -3,6 +3,9 @@ from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib import messages
 from .models import Patient
 
+
+
+
 @login_required
 def clinician_dashboard(request):
     patients = Patient.objects.filter(clinician=request.user)
@@ -76,3 +79,7 @@ def patient_detail(request, patient_id):
         'patient': patient,
         'histories': histories,
     })
+
+@login_required
+def patient_dashboard(request):
+    return render(request, 'patient_dashboard.html')
