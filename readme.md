@@ -26,7 +26,6 @@ HealthEase is a web-based healthcare management platform built with Django. It p
   - Add new patients with details like name, DOB, gender, and email.
   - View patient history and medical records.
 - **Psychological Testing**:
-  - Conduct the MCMI-III test with 175 questions.
   - Automated scoring, BR conversions, and interpretations.
   - Generate detailed reports grouped by sections (e.g., Personality Patterns, Clinical Syndromes).
 - **Profile Management**:
@@ -87,7 +86,6 @@ HealthEase is a web-based healthcare management platform built with Django. It p
 ---
 
 ### 9. **Psychological Assessment**
-- Conduct MCMI-III tests for patients.
 - Automated scoring and BR conversions.
 - Generate detailed reports with interpretations and clinical concerns.
 - View previous test attempts and their statuses.
